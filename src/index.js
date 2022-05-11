@@ -4,13 +4,15 @@ import { BrowserRouter } from "react-router-dom";
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-
+import { CartProvider } from './common/customHooks/context/CartContext';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>    
+    <CartProvider>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>   
+    </CartProvider> 
   </React.StrictMode>
 );
 
