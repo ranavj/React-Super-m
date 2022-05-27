@@ -1,14 +1,17 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
-import { CartContext } from "../../common/customHooks/context/CartContext";
+// import { CartContext } from "../../common/customHooks/context/CartContext";
 import useFetch from "../../common/customHooks/useFetch";
-
+import { addProduct, removeProduct } from "../../common/reduxStore/cartStore";
 const Tabs = ({ color, productDetail }) => {
   const [openTab, setOpenTab] = React.useState(1);
   const nutrition = productDetail ? productDetail.nutrition : null;
-  const { onProductAdd, cartProduct, onProductDelete } = useContext(CartContext);
+  // const { onProductAdd, cartProduct, onProductDelete } = useContext(CartContext);
 
-  console.log(cartProduct)
+  const cart = useSelector(state =>  state.cart);
+  const dispatch = useDispatch();
+  // console.log(cartProduct)
   return (
     <>
       <div className="flex flex-wrap">
@@ -81,8 +84,8 @@ const Tabs = ({ color, productDetail }) => {
                 <div className={openTab === 1 ? "block" : "hidden"} id="link1">
                   <p>
                     {`${productDetail.description} sold at ${productDetail.price} per piece`}
-                    <button  onClick={() => {onProductAdd(productDetail)}} className='flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 md:py-4 md:text-lg md:px-10'>start shoping</button>
-                    {cartProduct.length > 0 && <button  onClick={() => {onProductDelete(productDetail.id)}} className='flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 md:py-4 md:text-lg md:px-10'>remove product</button>}
+                    <button  onClick={() => {dispatch(addProduct(productDetail))}} className='flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 md:py-4 md:text-lg md:px-10'>start shoping</button>
+                    {cart.length > 0 && <button  onClick={() => {dispatch(removeProduct(productDetail.id))}} className='flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 md:py-4 md:text-lg md:px-10'>remove product</button>}
                   </p>
                 </div>
                 <div className={openTab === 2 ? "block" : "hidden"} id="link2">
@@ -139,7 +142,7 @@ export default function ProductDetails() {
 
   const { get, loading } = useFetch('https://react-tutorial-demo.firebaseio.com/');
   const [product, setProduct] = useState({});
-  const context = useContext(CartContext)
+  // const context = useContext(CartContext)
 
   const params = useParams()
 

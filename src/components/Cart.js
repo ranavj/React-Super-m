@@ -1,8 +1,10 @@
 /* This example requires Tailwind CSS v2.0+ */
-import { Fragment, useContext, useState } from 'react'
+import { Fragment,  useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { XIcon } from '@heroicons/react/outline'
-import { CartContext } from '../common/customHooks/context/CartContext'
+import { useSelector } from 'react-redux'
+import { getTotalPrice } from '../common/reduxStore/cartStore'
+// import { CartContext } from '../common/customHooks/context/CartContext'
 
 const products = [
   {
@@ -32,8 +34,12 @@ const products = [
 export default function Cart() {
   const [open, setOpen] = useState(true)
 
-  const { cartProduct, getTotalPrice } = useContext(CartContext);
-
+  // const { cartProduct, getTotalPrice } = useContext(CartContext);
+  const cartProduct = useSelector(state => state.cart);
+  const totalPrice = useSelector(getTotalPrice);
+  if(cartProduct.length === 0) {
+    return <p className='mt-3 text-base text-gray-500 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0 text-center'>No products added.</p>
+  } 
   return (
     <div className='container mx-auto mt-10'>
       {cartProduct.length > 0 &&
@@ -61,7 +67,7 @@ export default function Cart() {
               <td className='border-b border-slate-100 dark:border-slate-700 p-4 pl-8 text-slate-500 dark:text-slate-400'></td>
               <td className='border-b border-slate-100 dark:border-slate-700 p-4 pl-8 text-slate-500 dark:text-slate-400'></td>
               <td className='border-b border-slate-100 dark:border-slate-700 p-4 pl-8 text-slate-500 dark:text-slate-400'>Total</td>
-              <td className='border-b border-slate-100 dark:border-slate-700 p-4 pl-8 text-slate-500 dark:text-slate-400'>${getTotalPrice()}</td>
+              <td className='border-b border-slate-100 dark:border-slate-700 p-4 pl-8 text-slate-500 dark:text-slate-400'>${totalPrice}</td>
             </tr>
           </tbody>
         </table>

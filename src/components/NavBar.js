@@ -1,9 +1,10 @@
 /* This example requires Tailwind CSS v2.0+ */
-import { Fragment, useContext } from 'react'
+import { Fragment } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline'
 import { NavLink } from 'react-router-dom'
-import { CartContext } from '../common/customHooks/context/CartContext'
+import { useDispatch, useSelector } from 'react-redux';
+import { addCartTotal, addProduct } from '../common/reduxStore/cartStore';
 const navigation = [
   { name: 'Home', href: '/', current: true },
   { name: 'About us', href: '/about', current: false },
@@ -17,7 +18,8 @@ function classNames(...classes) {
 
 export default function NavBar() {
 
-  const context = useContext(CartContext);
+  const cartTotal = useSelector(addCartTotal);
+  
   return (
     <Disclosure as="nav" className="bg-gray-800">
       {({ open }) => (
@@ -56,7 +58,7 @@ export default function NavBar() {
                         )}
                         aria-current={item.current ? 'page' : undefined}
                       >
-                        {item.name} {item.total && (context.addCartTotal())}
+                        {item.name} {item.total && cartTotal}
                       </NavLink>
                     ))}
                   </div>
